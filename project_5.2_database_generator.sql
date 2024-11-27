@@ -311,12 +311,12 @@ ALTER TABLE rented_instruments ADD CONSTRAINT FK_rented_instruments_0 FOREIGN KE
 ALTER TABLE rented_instruments ADD CONSTRAINT FK_rented_instruments_1 FOREIGN KEY (instrument_renatl_id) REFERENCES instrument_rental (id);
 
 
-CREATE OR REPLACE TRIGGER limit_instruments_rented
-BEFORE INSERT ON rented_instruments
-FOR EACH ROW
+--CREATE OR REPLACE TRIGGER limit_instruments_rented
+--BEFORE INSERT ON rented_instruments
+--FOR EACH ROW
     -- NEW is the row that is being checked
-    IF (SELECT COUNT(*) FROM rented_instruments WHERE student_id = NEW.student_id) >= 2 THEN
-        RAISE EXCEPTION 'The student has already rented 2 other instruments.';
-    END IF;
+--    IF ((SELECT COUNT(*) FROM rented_instruments WHERE student_id = NEW.student_id) >= 2) THEN
+--        RAISE EXCEPTION 'The student has already rented 2 other instruments.';
+--    END IF;
     -- returns the original row if the error isn't raised
-    RETURN NEW;
+--    RETURN NEW;
