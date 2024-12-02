@@ -1,0 +1,36 @@
+   --QUERY 1
+    SELECT 
+	-- This extracts the year and month from the start time
+    EXTRACT(YEAR FROM ts.start_time) AS year,
+    EXTRACT(MONTH FROM ts.start_time) AS month,
+	-- This gets the total number of lessons held each month
+    COUNT(DISTINCT l.lesson_id) AS total_lessons,
+	-- This separates the lessons into the different lesson types 
+    COUNT(DISTINCT CASE WHEN l.lesson_type = 'Private' 
+        THEN l.lesson_id END) AS private_lessons,
+    COUNT(DISTINCT CASE WHEN l.lesson_type = 'Group' 
+        THEN l.lesson_id END) AS group_lessons,
+    COUNT(DISTINCT CASE WHEN l.lesson_type = 'Ensemble' 
+        THEN l.lesson_id END) AS ensemble_lessons
+
+	/* Checks all the data from the local_availability_time_slot table and then
+	takes all of the lesson and time_slot tables that match */
+FROM locale_availability_time_slot lats
+	JOIN lesson l ON lats.lesson_id = l.lesson_id
+	JOIN time_slot ts ON lats.timeslot_id = ts.timeslot_id
+    
+
+WHERE 
+	/* This checks that the result is within the requested year. 
+	This value should be changed if another year is requested */
+	EXTRACT(YEAR FROM ts.start_time) = 2024
+
+	-- Groups the results by year and then month
+GROUP BY 
+    EXTRACT(YEAR FROM ts.start_time),
+    EXTRACT(MONTH FROM ts.start_time)
+
+	-- Orders the results by year and then month
+ORDER BY 
+    year,
+    month;

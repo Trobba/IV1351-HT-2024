@@ -1,0 +1,17 @@
+--QUERY 2
+SELECT  
+    sibling_count AS "No of siblings",
+    COUNT(*) AS "No of students"
+FROM (
+    SELECT 
+        student.student_id, 
+        COUNT(sibling.sibling_id) AS sibling_count
+    FROM student
+    -- combines the student and sibling tables so we can see the students
+    -- with no siblings aswell
+    LEFT JOIN sibling ON student.student_id = sibling.student_id
+    GROUP BY student.student_id
+) AS sibling_counts
+-- groups and order by sibling count
+GROUP BY sibling_count
+ORDER BY sibling_count;
