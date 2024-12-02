@@ -112,6 +112,17 @@ VALUES
 ('2024-08-10 14:00:00', '2024-08-10 15:00:00');
 
 
+INSERT INTO genre (genre)
+VALUES
+('Classical'),
+('Jazz'),
+('Rock'),
+('Pop'),
+('Folk'),
+('Blues'),
+('Electronic');
+
+
 -- Sample data for type_of_instruments table
 INSERT INTO type_of_instruments (instrument_type)
 VALUES
@@ -120,6 +131,8 @@ VALUES
 ('Violin'),
 ('Drums'),
 ('Flute');
+
+
 
 -- Sample data for contact_person table (5 contact people)
 INSERT INTO contact_person (person_id, relation_to_student)
@@ -197,6 +210,11 @@ VALUES
 (4, 'Group'), (8, 'Private'), (5, 'Private'), (9, 'Group'), (10, 'Private'),
 (1, 'Group'), (2, 'Private'), (6, 'Group'), (3, 'Group'), (7, 'Group'),
 (4, 'Private'), (8, 'Group'), (5, 'Private'), (9, 'Private'), (10, 'Group');
+
+INSERT INTO ensamble (lesson_id, genres_id)
+VALUES
+(1, 1), (2, 2), (6, 6), (3, 3), (7, 7),
+(4, 4), (8, 1), (5, 5), (9, 2), (10, 3);
 
 -- Sample data for lesson_instrument table
 INSERT INTO lesson_instrument (lesson_id, type_of_instruments_id, skill_levels_available_id)
@@ -309,7 +327,7 @@ VALUES
 (4, 29),
 (5, 30);
 
-INSERT INTO local_availability_time_slot (locales_id, lesson_id, timeslot_id)
+INSERT INTO locale_availability_time_slot (locales_id, lesson_id, timeslot_id)
 VALUES
 (1, 1, 1),
 (2, 2, 2),
