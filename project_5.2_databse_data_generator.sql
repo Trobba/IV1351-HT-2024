@@ -211,10 +211,10 @@ VALUES
 (1, 'Group'), (2, 'Private'), (6, 'Group'), (3, 'Group'), (7, 'Group'),
 (4, 'Private'), (8, 'Group'), (5, 'Private'), (9, 'Private'), (10, 'Group');
 
-INSERT INTO ensamble (lesson_id, genres_id)
+INSERT INTO ensamble (lesson_id, genres_id, min_nunmber_of_students, max_number_of_students)
 VALUES
-(1, 1), (2, 2), (6, 6), (3, 3), (7, 7),
-(4, 4), (8, 1), (5, 5), (9, 2), (10, 3);
+(1, 1, 1, 2), (2, 2, 4, 4), (6, 6, 4, 5), (3, 3, 4, 6), (7, 7, 2, 2),
+(4, 4, 4, 20), (8, 1, 4, 20), (5, 5, 4, 20), (9, 2, 4, 20), (10, 3, 4, 20);
 
 -- Sample data for lesson_instrument table
 INSERT INTO lesson_instrument (lesson_id, type_of_instruments_id, skill_levels_available_id)
@@ -292,7 +292,17 @@ VALUES
 (27, 27),
 (28, 28),
 (29, 29),
-(30, 30);
+(30, 30),
+(1, 2),
+(2, 3),
+(3, 4),
+(4, 5),
+(5, 6),
+(6, 7),
+(7, 8),
+(8, 9),
+(9, 10),
+(10, 1);
 
 INSERT INTO locale_availability (locales_id, lesson_id)
 VALUES
