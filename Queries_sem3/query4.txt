@@ -1,0 +1,49 @@
+--QUERY 4
+SELECT 
+	EXTRACT(WEEK FROM ts.start_time) as week,
+	/* Converts the day of the week from a number to Text*/
+	CASE 
+		WHEN EXTRACT(DOW FROM ts.start_time) = 1 THEN 'Monday'
+		WHEN EXTRACT(DOW FROM ts.start_time) = 2 THEN 'Tuesday'
+		WHEN EXTRACT(DOW FROM ts.start_time) = 3 THEN 'Wednesday'
+		WHEN EXTRACT(DOW FROM ts.start_time) = 4 THEN 'Thursady'
+		WHEN EXTRACT(DOW FROM ts.start_time) = 5 THEN 'Friday'
+		WHEN EXTRACT(DOW FROM ts.start_time) = 6 THEN 'Saturday'
+		WHEN EXTRACT(DOW FROM ts.start_time) = 7 THEN 'Sunday'
+		ELSE 'Incorrect date'
+	END as Day,
+	gen.genre,
+	/* Selects the right number of seats remaining */
+	CASE
+		WHEN en.max_number_of_students = count(ls.student_id) 
+                    THEN 'No Seats'
+		WHEN en.max_number_of_students - count(ls.student_id) >= 3 
+                    THEN 'Many Seats'
+		WHEN en.max_number_of_students - count(ls.student_id) = 1 
+                    OR en.max_number_of_students - count(ls.student_id) = 2 
+                    THEN '1 or 2 Seats'
+		ELSE 'Incorrect student amounts'
+	END AS no_of_free_seats
+	
+FROM locale_availability_time_slot lats
+	JOIN lesson l ON lats.lesson_id = l.lesson_id
+	JOIN time_slot ts ON lats.timeslot_id = ts.timeslot_id
+	JOIN ensamble en ON en.lesson_id = l.lesson_id
+	JOIN genre gen ON gen.genres_id = en.genres_id
+	JOIN lesson_student ls on l.lesson_id = ls.lesson_id	
+
+WHERE 
+	-- Current week + 1 is the next week
+	EXTRACT(WEEK FROM current_date) + 1 = EXTRACT(WEEK FROM ts.start_time) AND
+	-- Because this query handles genre the lesson type can not be changed
+	l.lesson_type = 'Ensemble'
+
+GROUP BY
+	ts.start_time,
+	gen.genre,
+	en.min_nunmber_of_students,
+	en.max_number_of_students
+	
+ORDER BY
+	EXTRACT(DOW FROM ts.start_time),
+	genre;

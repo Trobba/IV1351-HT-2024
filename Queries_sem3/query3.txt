@@ -1,0 +1,20 @@
+--QUERY 3
+SELECT i.instructor_id, p.name, count(i_s) AS total_lessons
+FROM instructor_schedule_time_slot AS lsts
+JOIN time_slot AS ts 
+    ON lsts.timeslot_id = ts.timeslot_id AND
+    --filter time slots from August 2024
+    EXTRACT(YEAR FROM ts.start_time) = EXTRACT(YEAR FROM CURRENT_DATE) AND
+    EXTRACT(MONTH FROM ts.start_time) = EXTRACT(MONTH FROM CURRENT_DATE)
+JOIN instructor_schedule AS i_s 
+    ON lsts.instructor_schedule_id = i_s.instructor_schedule_id
+JOIN instructor AS i ON i_s.instructor_id = i.instructor_id
+JOIN person AS p ON i.person_id = p.id
+
+GROUP BY 
+    i.instructor_id,
+    p.name
+    
+-- filter how much the minimum amount of lessons a teacher should have	
+HAVING count(i_s) > 0
+ORDER BY count(i_s)DESC;
